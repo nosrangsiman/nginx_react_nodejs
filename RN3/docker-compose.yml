@@ -1,0 +1,23 @@
+version: '3.9'
+services:
+  nginx:
+    image: nginx:alpine
+    restart: always
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+  
+  Node1:
+    image: service_1
+    container_name: Node1
+    restart: always
+
+  React1:
+    image: lab_1:latest
+    depends_on:
+      - Node1
+    container_name: React1
+    restart: always
+    links:
+      - nginx

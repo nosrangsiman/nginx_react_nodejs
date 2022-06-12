@@ -1,0 +1,15 @@
+version: '3.9'
+services:
+  nodejs:
+    image: node-basic-get
+    container_name: Get-basic
+    restart: always
+    links:
+      - nginx
+  nginx:
+    image: nginx:alpine
+    container_name: nginx_get
+    ports: 
+      - "80:80"
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
