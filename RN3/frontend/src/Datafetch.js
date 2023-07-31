@@ -3,7 +3,7 @@ import axios from 'axios'
 function Datafetch() {
     const [posts, setPosts] = useState([])
     useEffect(() => {
-        axios.get('http://Node1:4000/')
+        axios.get('http://localhost/api')
             .then(res => {
                 console.log(res)
                 setPosts(res.data)
