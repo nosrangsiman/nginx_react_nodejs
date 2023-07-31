@@ -4,8 +4,7 @@ RUN apk add --update --no-cache python3 && ln -sf python3 /usr/bin/python && pyt
 RUN apk add make g++
 RUN apk add openjdk11
 COPY . .
-ENV PATH /app/node_modules/.bin:$PATH
-RUN npm ci --silent --verbose
+RUN npm ci --verbose
 CMD ["npm","start"]
 
 EXPOSE 3000
