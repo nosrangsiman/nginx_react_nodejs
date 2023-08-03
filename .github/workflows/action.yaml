@@ -1,5 +1,5 @@
 #
-name: UAT Builds
+name: CICD build
 
 on:
   push:
