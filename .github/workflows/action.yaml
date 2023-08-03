@@ -1,5 +1,5 @@
 #
-name: Production build
+name: CICD build
 
 on:
   workflow_dispatch:
