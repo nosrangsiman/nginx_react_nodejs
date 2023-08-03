@@ -1,5 +1,5 @@
 #
-name: React Nodejs
+name: Production build
 
 on:
   workflow_dispatch:
