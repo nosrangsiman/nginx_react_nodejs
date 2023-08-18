@@ -27,9 +27,17 @@ jobs:
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASS_TOKEN }}
 
-      - name: print name input
+      - uses: actions/checkout@v2
+      - name: Get tag
+        id: vars
+        run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+
+      - name: Check output
+        env:
+          RELEASE_VERSION: ${{ steps.vars.outputs.tag }}
         run: |
-          echo The username is ${{ inputs.version_Image }}
+          echo $RELEASE_VERSION
+          echo ${{ steps.vars.outputs.tag }}
 
       - name: Build and push Docker image (FE)
         uses: mr-smithers-excellent/docker-build-push@v6
@@ -45,7 +53,7 @@ jobs:
         uses: mr-smithers-excellent/docker-build-push@v6
         with:
           image: ${{ env.IMAGE_NAME_BE }}
-          tags: ${{ inputs.version_Image }}
+          tags: v0.0.${{github.run_number}}
           registry: ${{ env.REGISTRY }}
           dockerfile: RN3/backend/Dockerfile
           username: ${{ secrets.USERNAME }}
