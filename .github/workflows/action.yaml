@@ -2,13 +2,8 @@ name: CICD build
 
 on:
   workflow_dispatch:
-    inputs:
-      version_Image:
-        description: "input version image"
-        default: ""
-        type: "string"
   pull_request:
-    branches: [ main ]
+    branches: [ uat ]
 
 env:
   REGISTRY: ghcr.io
