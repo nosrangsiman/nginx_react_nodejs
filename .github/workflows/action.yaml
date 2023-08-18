@@ -2,13 +2,10 @@ name: CICD build
 
 on:
   workflow_dispatch:
-    inputs:
-      version_Image:
-        description: "input version image"
-        default: ""
-        type: "string"
+    tags:
+      - '*'
   pull_request:
-    branches: [ main ]
+    branches: [ uat ]
 
 env:
   REGISTRY: ghcr.io
@@ -32,15 +29,20 @@ jobs:
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASS_TOKEN }}
 
-      - name: print name input
-        run: |
-          echo The username is ${{ inputs.version_Image }}
+      - name: Get tag
+        id: tag
+        uses: dawidd6/action-get-tag@v1
+        with:
+          # Optionally strip `v` prefix
+          strip_v: false
+      - name: Use tag
+        run: echo ${{steps.tag.outputs.tag}}
 
       - name: Build and push Docker image (FE)
         uses: mr-smithers-excellent/docker-build-push@v6
         with:
           image: ${{ env.IMAGE_NAME_FE }}
-          tags: v0.0.${{github.run_number}}
+          tags: ${{steps.tag.outputs.tag}}
           registry: ${{ env.REGISTRY }}
           dockerfile: RN3/frontend/Dockerfile
           username: ${{ secrets.USERNAME }}
@@ -50,7 +52,7 @@ jobs:
         uses: mr-smithers-excellent/docker-build-push@v6
         with:
           image: ${{ env.IMAGE_NAME_BE }}
-          tags: ${{ inputs.version_Image }}
+          tags: v0.0.${{github.run_number}}
           registry: ${{ env.REGISTRY }}
           dockerfile: RN3/backend/Dockerfile
           username: ${{ secrets.USERNAME }}
